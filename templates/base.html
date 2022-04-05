@@ -13,8 +13,8 @@
 		<!-- to understand better, read how template inheritance works in Flask : https://flask.palletsprojects.com/en/2.1.x/patterns/templateinheritance/ -->
 
 	<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-	<link href="{{ url_for('static', filename='css/bulma.css')}}" rel="stylesheet">
-	<link href="{{ url_for('static', filename='css/custom.css')}}" rel="stylesheet">
+	<link href="{{ url_for('static', filename='css/bulma.css') }}" rel="stylesheet">
+	<link href="{{ url_for('static', filename='css/custom.css') }}" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;900&display=swap" rel="stylesheet">
 
@@ -27,7 +27,7 @@
 				<div class="container">
 					<div class="navbar-brand">
 						<a class="navbar-item">
-							<img src="/static/media/base-navbrand.svg" alt="ISS DES" width="24" height="24">
+							<img src="{{ url_for('static', filename='media/base-navbrand.svg') }}" alt="ISS DES" width="24" height="24">
 						</a>
 						<a role="button" class="navbar-burger burger" aria-label="Menu" aria-expanded="false" data-target="navbarTopMain">
 							<span aria-hidden="true"></span>
@@ -37,19 +37,19 @@
 					</div>
 					<div class="navbar-menu" id="navbarTopMain">
 						<div class="navbar-end">
-							<a href="{{ url_for('app.presenthome')}}" class="navbar-item has-text-weight-semibold">
+							<a href="{{ url_for('app.presenthome') }}" class="navbar-item has-text-weight-semibold">
 								<span>Home</span>
 							</a>
-							<a href="{{ url_for('app.presentview')}}" class="navbar-item has-text-weight-semibold">
+							<a href="{{ url_for('app.presentview') }}" class="navbar-item has-text-weight-semibold">
 								<span>File Search & Download</span>
 							</a>
-							<a href="{{ url_for('app.presentupload')}}" class="navbar-item has-text-weight-semibold">
+							<a href="{{ url_for('app.presentupload') }}" class="navbar-item has-text-weight-semibold">
 								<span>Upload</span>
 							</a>
-							<a href="{{ url_for('app.presentshare')}}" class="navbar-item has-text-weight-semibold">
+							<a href="{{ url_for('app.presentshare') }}" class="navbar-item has-text-weight-semibold">
 								<span>Share</span>
 							</a>
-							<a href="{{ url_for('app.user')}}" class="navbar-item has-text-weight-semibold">
+							<a href="{{ url_for('app.user') }}" class="navbar-item has-text-weight-semibold">
 								<span>Profile</span>
 							</a>
 						</div>
