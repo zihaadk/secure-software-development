@@ -203,3 +203,39 @@ def processupload():
 ##### Other Operations #####
 
 # File Share
+@app.route('/share-1', methods=['GET'])
+@login_required
+def presentshare():
+	if current_user.is_authenticated:
+		uid = current_user.get_id()
+		thisdatauser = DataUser.query.filter_by(userid=uid).first()
+	if thisdatauser:
+		thisaid = thisdatauser.useraccessid
+		asglist = thisdatauser.authgroups
+		if asglist is None:
+			usergroupdict = dict()
+		else:
+			asglist = getauthsfg(asglist)
+		fileid = request.args.get('ukn')
+		# check if user at least member of one group
+		if len(usergroupdict) > 0:
+			thispresgroups = newsharedgroups(usergroupdict)
+		else:
+			flash("the account {} is not member of any authorised groups. Contact the ISS ground centre for getting support".format(thisaid))
+			return redirect(url_for('app.presentview'))
+		if fileid is None:
+			errmsg = "No file selected, return to the 'Search' page for sharing a file"
+			flash(errmsg)
+	return render_template('share.html', presgroups=thispresgroups, ukn=fileid)
+	
+@app.route('share-2', methods=['POST'])
+@login_required
+def processshare():
+	if current_user.is_authenticated:
+		uid = current_user.get_id()
+	checkshared = request.form.getlist('sharedgroups')
+	fileid = request.form.get('ukn2')
+	updategrpsql = updatesharedgroupssql(checkshared, fileid, uid)
+	dbcondata = getconnectiondata()
+	updatesharedgrp(dbcondata, updategrpsql)
+	return render_template('share-notification.html')
