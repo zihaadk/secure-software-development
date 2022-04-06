@@ -68,7 +68,7 @@ def presenthome():
 @app.route('/search-download-1', methods=['GET'])
 @login_required
 def presentview():
-	print("inside presentview")
+	print("inside present view")
 	if current_user.is_authenticated:
 		uid = current_user.get_id()
 		thisdatauser = DataUser.query.filter_by(userid=uid).first()
@@ -81,10 +81,10 @@ def presentview():
 	return render_template('search.html', grouplist=asglist, aid=duaid)
 
 	
-@app.route('/search-download-5', methods=['POST'])
+@app.route('/search-download-1', methods=['POST'])
 @login_required
 def presentview2():
-	print("inside presentview")
+	print("inside present view2")
 	if current_user.is_authenticated:
 		uid = current_user.get_id()
 		thisdatauser = DataUser.query.filter_by(userid=uid).first()
@@ -118,4 +118,88 @@ def presentview2():
 	return render_template('view.html', asfiledict=authsdict, aid=thisaid, grouplist=asglist, searchfname=sfname, searchkeytag=skeytag, searchtype=sftype)
 	
 	
-	
+# The app's upload functionality handled here
+# Metadata of the uploaded files will include current time and unique ID of authenticated users
+# Although it depends to available deployment models, this data will be held on the server side to avoid tampering
+#
+# The unusual URL routing activities, file-up-2 sending data to file-up allows to create potential secmon rules
+# I.E., malicious exploring activities in the app once authenticated with a valid credentials
+# numerous URL discovery requests based on the existing naming conventions
+
+
+@app.route('/file-up-2', methods=['GET'])
+@login_required
+def presentupload():
+	print("inside presentupload /file-up-2")
+	return render_template('upload.html')
+
+# The main route used to handle actual file uploads, content validations, suspicious contents
+# and authenticated user's id identification
+
+
+@app.route('file-up', methods=['POST'])
+@login_required
+def processupload():
+	if current_user.is_authenticated:
+		uid = current_user.get_id()
+		# collecting data here for logging
+		thisdatauser = DataUser.query.filter_by(userid=uid).first()
+	if thisdatauser:
+		thisaid = thisdatauser.useraccessid
+	# if no input given/empty
+	newfile = request.files['fileup']
+	if newfile.filename == '':
+		errmsg = "No file selection detected"
+		flash(errmsg)
+		return redirect(url_for(app.presentupload))
+	# Leading file paths can be removed with Werkzeug - OWASP explanation below:
+	# https://owasp.org/www-community/attacks/Path_Traversal
+	newfilesecname = secure_filename(newfile.filename)
+	flupkeytag = request.form.get('fileup-keyword-tag')
+	# Trim keywords while storing files - 254 char is a hard limit
+	if len(flupkeytag) > 254:
+		flupkeytag = flupkeytag[:254]
+	# Remove potentially malicious html tags
+	flupkeytag = escape(flupkeytag)
+	fluptype = request.form.get('uploadedfiletype')
+	if len(fluptype) == 0:
+		errmsg = "Use the dropdown menu to select one of the available file types"
+		flash(errmsg)
+		return redirect(url_for('app.presentupload'))
+	flupmimetest = getmimetype(fluptype)
+	if flupmimetest == 'invalid-mimetype':
+		print("sec0001: Suspicious mimetype detected {} ".format("- -" + flupmimetest + "- -"))
+		errmsg = "Use the dropdown menu to select one of the available file types"
+		flash(errmsg)
+		return redirect(url_for(app.presentupload))
+	# Validate the extension extracted from file is a selected extension type
+	flupext = getfileextension(newfilesecname)
+	errmsg = testfileextension(flupext, fluptype)
+	if errmsg is not None:
+		flash(errmsg)
+		return redirect(url_for('app.presentupload'))
+	# Input Testing
+	filedata = newfile.stream.read()  # byte stream
+	filesize = len(filedata)
+	if filesize > 50000000:
+		errmsg = "Filesize is bigger than defined limits - 45mb"
+		flash(errmsg)
+		return redirect(url_for(app.presentupload))
+	# move metadata into database
+	filecreate = getcurdate()
+	fileuuid = getnewuuid()
+	uploadsql = ''' INSERT INTO store(uuid_hex, filename, filetype, filedata, fileowner, filecreate, filesize, keywords_tags) VALUES (%s,%s,%s,%s,%s,%s,%s,%s) '''
+	valuetuple = (fileuuid, newfilesecname, fluptype, filedata, uid, filecreate, filesize, flupkeytag)
+	dbcondata = getconnectiondata()
+	resultslist = newfileupload(dbcondata, uploadsql, valuetuple)
+	# custom logging events
+	payloadlist = ['AccessID', thisaid, 'FileName', newfilesecname, 'FIleUUId', fileuuid, 'FileCreate', filecreate]
+	logmsgdict = newlogheader(2, 1, 7, str(uid))
+	logmsg = newlogmsg(logmsgdict, payloadlist)
+	current_app.logger.warning(logmsg)
+	return render_template('upload-notification.html', fname=newfilesecname, aid=thisaid)
+
+
+##### Other Operations #####
+
+# File Share
