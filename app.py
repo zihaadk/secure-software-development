@@ -45,7 +45,7 @@ def index():
 @app.route('/home')
 @login_required
 def presenthome():
-	print("inside present home")
+	print("inside presenthome")
 	if current_user.is_authenticated:
 		uid = current_user.get_id()
 		thisdatauser = DataUser.query.filter_by(userid=uid).first()
@@ -68,7 +68,7 @@ def presenthome():
 @app.route('/search-download-1', methods=['GET'])
 @login_required
 def presentview():
-	print("inside present view")
+	print("inside presentview")
 	if current_user.is_authenticated:
 		uid = current_user.get_id()
 		thisdatauser = DataUser.query.filter_by(userid=uid).first()
@@ -81,10 +81,10 @@ def presentview():
 	return render_template('search.html', grouplist=asglist, aid=duaid)
 
 	
-@app.route('/search-download-1', methods=['POST'])
+@app.route('/search-download-5', methods=['POST'])
 @login_required
 def presentview2():
-	print("inside present view2")
+	print("inside presentview")
 	if current_user.is_authenticated:
 		uid = current_user.get_id()
 		thisdatauser = DataUser.query.filter_by(userid=uid).first()
@@ -115,7 +115,7 @@ def presentview2():
 		else:
 			authsdict = dict()
 			authsdict['00000000000000000000000000000000'] = "No files found for this search: {}".format(sftype)
-	return render_template('view2.html', asfiledict=authsdict, aid=thisaid, grouplist=asglist, searchfname=sfname, searchkeytag=skeytag, searchtype=sftype)
+	return render_template('view.html', asfiledict=authsdict, aid=thisaid, grouplist=asglist, searchfname=sfname, searchkeytag=skeytag, searchtype=sftype)
 	
 	
 	
