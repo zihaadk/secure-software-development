@@ -19,7 +19,7 @@ from . import db, getconnectiondata, newdburi
 from . models import DataUser, User, DataGroup
 import io
 # other custom functions and module classes
-from . cutility import getauthsfg, getauthsfilesql, getauthsfiles,newresultsdict, getfiledatasql, getfiledata, getmimetype, testfileownersql,testfileownership,getgroupdetails, newsharedgroups,updatesharedgroupssql,updatesharedgrp,testfsradio,getfileextension,testfileextension,getcurdate,getnewuuid,newfileupload,getfiledeletesql,deletefilerecord,newlogmsg,newlogheader
+from . dbmodel import getauthsfg, getauthsfilesql, getauthsfiles, newresultsdict, getfiledatasql, getfiledata, getmimetype, testfileownersql, testfileownership, getgroupdetails, newsharedgroups, updatesharedgroupssql, updatesharedgrp, testfsradio, getfileextension, testfileextension, getcurdate, getnewuuid, newfileupload, getfiledeletesql, deletefilerecord, newlogmsg, newlogheader
 
 
 app = Blueprint('app.py', __name__)
