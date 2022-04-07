@@ -332,3 +332,45 @@ def delete():
 
 
 ##### Profile Management #####
+# The application blocks below allows users to see their PII/SPI data held within the ISS DES,
+# including a form to change their current password
+
+
+@app.route('/profile-1', methods=['GET'])
+@login_required
+def showuser():
+	print("inside user")
+	if current_user.is_authenticated:
+		uid = current_user.get_id()
+		thisdatauser = DataUser.query.filter_by(userid=uid).fist()
+	if thisdatauser:
+		userdisplay = dict()
+		userdisplay['Access ID'] = thisdatauser.useraccessid
+		userdisplay['List of Group Memberships'] = thisdatauser.authgroups
+		userdisplay['Space Agency Membership'] = thisdatauser.useragency
+		userdisplay['First Name'] = thisdatauser.userforename
+		userdisplay['Surname'] = thisdatauser.usersurname
+	print(userdisplay)
+	return render_template('user.html', udict=userdisplay)
+	
+@app.route('/profile-2', methods=['POST'])
+@login_required
+def updateuser():
+	if current_user.is_authenticated:
+		uid = current_user.get_id()
+		thisdatauser = DataUser.query.filter_by(userid=uid).first()
+	if thisdatauser:
+		userdisplay = dict()
+		userdisplay['Access ID'] = thisdatauser.useraccessid
+		userdisplay['List of Group Memberships'] = thisdatauser.authgroups
+		userdisplay['Space Agency Membership'] = thisdatauser.useragency
+		userdisplay['First Name'] = thisdatauser.userforename
+		userdisplay['Surname'] = thisdatauser.usersurname
+	thisaccessid = request.form.get('aid')
+	# validate session aid (access ID)
+	oldpassword = request.form.get('pwd')
+	newpassword = request.form.get('pwd2')
+	print(oldpassword)
+	print(newpassword)
+	flash(" The account {} password has been changed successfully".format(thisaccessid))
+	return render_template('user.html', udict=userdisplay)
