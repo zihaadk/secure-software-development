@@ -239,3 +239,74 @@ def processshare():
 	dbcondata = getconnectiondata()
 	updatesharedgrp(dbcondata, updategrpsql)
 	return render_template('share-notification.html')
+
+
+##### Download #####
+@app.route('/search-download-2', methods=['POST'])
+@login_required
+def getdownload():
+	# We need to confirm the state of radio buttons whether they are checked or not
+	# since we mostly avoid client side javascripts, this can be done on the server side
+	print ("inside search-download-2")
+	fileuuid = request.form.get('fileselection')
+	selection = request.form.get('actionrequest')
+	# Input validation goes here
+	errmsg = testfsradio(fileuuid, selaction)
+	if errmsg is not None:
+		flash(errmsg)
+		return redirect(url_for('app.presentview'))
+	if current_user.is_authenticated:
+		uid = current_user.get_id()
+		thisdatauser = DataUser.query.filter_by(userid=uid).first()
+		asglist = thisdatauser.authgroups
+		aid = thisdatauser.useraccessid
+		if asglist is None:
+			flash("The user {} is not member of any authorised groups. Please contact the ISS ground centre to get support".format(aid))
+			asglist = "122,124"
+			
+		# check if the authenticated user is the current owner of the uploaded file
+		# otherwise, treat it like an error
+		if selaction == "sharefile" or selaction == "deletefile":
+			tfosql = testfileownersql(fileuuid)
+			dbcondata = getconnectiondata()
+			tforesult = testfineownership(dbcondata, tfosql)
+			if int(tforesult[0]) != int(uid):
+				errmsg = "Account {} not the current owner of file {}".format(aid, tforesult[1])
+				flash(errmsg)
+				return redirect(request.referrer)
+			else:
+				if selaction == "sharefile":
+					return redirect(url_for('app.presentshare', ukn=fileuuid))
+				if selaction == "deletefile":
+					return redirect(url_for('app.delete', ukn=fileuuid))
+		else:
+			# re-run the check above one more time to detect IDOR attacks
+			# https://cheatsheetseries.owasp.org/cheatsheets/Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html
+			print("Confirm if UID {} , in these groups {}, authorised for this {}".format(uid, asglist, fileuuid))
+			thissql = getfiledatasql(uid, asglist, fileuuid)
+			dbcondata = getconnectiondata()
+			thisfilereq = getfiledata(dbcondata, thissql)
+			if thisfilereq is None:
+				return render_template('downloadfailure.html', tempprint=thissql)
+			else:
+				filetype = thisfilereq[0]
+				filename = thisfilereq[1]
+				fileblob = io.BytesIO(thisfilereq[2])  # Converting and preparing the byte array to send
+				newmime = getmimetype(filetype)
+				# log the executed action here
+				payloadlist = ['AccessID', aid, 'FileName', filename, 'FileType', filetype]
+				logmsgdict = newlogheader(1, 1, 6, str(uid))
+				logmsg = newlogmsg(logmsgdict, payloadlist)
+				current_app.logger.info(logmsg)
+				return send_file(fileblob, as_attachment=True, download_name=filename, mimetype=newmime)
+	# Unauthenticated Users
+	else:
+		return render_template('index.html')
+
+# Avoid potential IDOR attacks and not allow 'GET' method
+@app.route('/search-download-2', methods=['GET'])
+def presentdlredirect():
+	return render_template('index.html')
+
+
+##### Delete #####
