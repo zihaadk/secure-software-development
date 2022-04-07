@@ -310,3 +310,25 @@ def presentdlredirect():
 
 
 ##### Delete #####
+@app.route('/delete-2', methods=['GET'])
+@login_required
+def delete():
+	print("inside delete method")
+	if current_user.is_authenticated:
+		uid = current_user.get_id()
+		thisdatauser = DataUser.query.filter_by(userid=uid).first()
+		thisaid = thisdatauser.useraccessid
+		# fetch details
+		fileid = request.args.get('ukn')
+		delsql = getfiledeletesql(uid, fileid)
+		dbcondata = getconnectiondata()
+		results = deletefilerecord(dbcondata, delsql)
+		# log the executed action here
+		payloadlist = ['AccessID', thisaid, 'FileId', fileid, 'ActivityDetail', 'SuccessfulFileDeletion']
+		logmsgdict = newlogheader(1, 1, 6, str(uid))
+		logmsg = newlogmsg(logmsgdict, payloadlist)
+		current_app.logger.info(logmsg)
+		return render_template('delete-notification.html', aid=thisaid)
+
+
+##### Profile Management #####
