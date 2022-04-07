@@ -2,6 +2,8 @@
 # Author(s): cryptopal85
 # Version history: April 05 2022 - Initialising main structure
 #                                - building authentication - preparing routing and html templates
+#                  April 06 2022 - building CRUD functionalities
+#                  April 07 2022 - building CRUD functionalities and polishing
 #
 # Remarks: app.py is a main block that will be used routing the requests such as
 # viewing, sharing, uploading files, etc. to appropriate URLs.
@@ -13,11 +15,11 @@ from markupsafe import escape
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
 from os import environ, path
-# from . import db, getconnectiondata, newdburi - will uncomment once it's completed
-# from . models import DataUser, User, DataGroup - will uncomment once models are completed
+from . import db, getconnectiondata, newdburi
+from . models import DataUser, User, DataGroup
 import io
 # other custom functions and module classes
-# placeholder will be listed here
+from . cutility import getauthsfg, getauthsfilesql, getauthsfiles,newresultsdict, getfiledatasql, getfiledata, getmimetype, testfileownersql,testfileownership,getgroupdetails, newsharedgroups,updatesharedgroupssql,updatesharedgrp,testfsradio,getfileextension,testfileextension,getcurdate,getnewuuid,newfileupload,getfiledeletesql,deletefilerecord,newlogmsg,newlogheader
 
 
 app = Blueprint('app.py', __name__)
@@ -115,7 +117,7 @@ def presentview2():
 		else:
 			authsdict = dict()
 			authsdict['00000000000000000000000000000000'] = "No files found for this search: {}".format(sftype)
-	return render_template('view.html', asfiledict=authsdict, aid=thisaid, grouplist=asglist, searchfname=sfname, searchkeytag=skeytag, searchtype=sftype)
+	return render_template('view2.html', asfiledict=authsdict, aid=thisaid, grouplist=asglist, searchfname=sfname, searchkeytag=skeytag, searchtype=sftype)
 	
 	
 # The app's upload functionality handled here
@@ -137,7 +139,7 @@ def presentupload():
 # and authenticated user's id identification
 
 
-@app.route('file-up', methods=['POST'])
+@app.route('/file-up-1', methods=['POST'])
 @login_required
 def processupload():
 	if current_user.is_authenticated:
@@ -151,7 +153,7 @@ def processupload():
 	if newfile.filename == '':
 		errmsg = "No file selection detected"
 		flash(errmsg)
-		return redirect(url_for(app.presentupload))
+		return redirect(url_for('app.presentupload'))
 	# Leading file paths can be removed with Werkzeug - OWASP explanation below:
 	# https://owasp.org/www-community/attacks/Path_Traversal
 	newfilesecname = secure_filename(newfile.filename)
@@ -171,7 +173,7 @@ def processupload():
 		print("sec0001: Suspicious mimetype detected {} ".format("- -" + flupmimetest + "- -"))
 		errmsg = "Use the dropdown menu to select one of the available file types"
 		flash(errmsg)
-		return redirect(url_for(app.presentupload))
+		return redirect(url_for('app.presentupload'))
 	# Validate the extension extracted from file is a selected extension type
 	flupext = getfileextension(newfilesecname)
 	errmsg = testfileextension(flupext, fluptype)
@@ -184,7 +186,7 @@ def processupload():
 	if filesize > 50000000:
 		errmsg = "Filesize is bigger than defined limits - 45mb"
 		flash(errmsg)
-		return redirect(url_for(app.presentupload))
+		return redirect(url_for('app.presentupload'))
 	# move metadata into database
 	filecreate = getcurdate()
 	fileuuid = getnewuuid()
