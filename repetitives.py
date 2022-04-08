@@ -4,6 +4,7 @@
 #                                - parsing capability for dbmodel and custom SQL queries
 # Version history: April 08 2022 - custom input validations
 #                                - polish and sanity check
+# Version history: April 09 2022 - fixed spotted typos
 #
 # Remarks: Numerous data processing stages need to be repeated within different part of
 # the system. Thus, instead of coding those functions each time under the relevant part of the code
