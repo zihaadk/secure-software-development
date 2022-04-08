@@ -337,4 +337,52 @@ def getfileextension(flupfilename):
 	return flupext
 	
 
-#
+# Check if the selected extension is on the list of available extensions
+def testfileextension(flupext, fluptype):
+	if flupext.lower() != fluptype.lower():
+		msg = "The selected file extension and file type didn't match"
+		return msg
+	return None
+	
+
+# Format the current date and time into MySQL date time convention
+def getcurdate():
+	return datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+	
+
+# Create UUID on the server side, then send it to database as hex value
+# It can be used in the views and easily converted back and forth
+# uuid4 from Python is used due to Privacy concerns - https://docs.python.org/3.10/library/uuid.html#module-uuid
+def getnewuuid():
+	hexuuid = uuid.uuid4().hex
+	return hexuuid
+	
+
+def getuuidstring(hexuuid):
+	return str(uuid.UUID(hexuuid))
+	
+
+##### ISS DES Logging Patterns #####
+
+
+def newlogheader(ld, td, cd, uid=0):  # Default value is 0
+	levelist = ['debug', 'info', 'warning', 'error', 'critical']
+	typelist = ['ActivityTracking', 'EventOfInterest', 'AnomalousActivity', 'ApplicationError']
+	categorylist = ['URLAccess', 'AuthenticationSuccess', 'AuthenticationFailure', 'AuthorizationSuccess', 'AuthorizationFailure', 'AuthorizationChange', 'FileAccess', 'FileCreation', 'DatabaseException', 'ApplicationException']
+	logmsgdict = dict()
+	logmsgdict['eventlogtime'] = datetime.datetime.now().isoformat(sep = ' ', timespec ='miliseconds')
+	logmsgdict['level'] = levelist[ld]
+	logmsgdict['type'] = typelist[td]
+	logmsgdict['category'] = categorylist[cd]
+	logmsgdict['userid'] = str(uid)
+	return logmsgdict
+	
+
+def newlogmsg(lhd, lpl):
+	if len(lpl) %2 !=0:
+		payload = ','.join(lpl)
+		lpl = ['InvalidPayload', payload]
+	# Add the new keys and their values to the dict
+	for i in range(0, len(lpl), 2):
+		lhd[lpl[i]] = lpl[i + 1]
+	return lhd
