@@ -3,6 +3,7 @@
 # Version history: April 07 2022 - Initialising main structure,
 #                                - parsing capability for dbmodel and custom SQL queries
 # Version history: April 08 2022 - custom input validations
+#                                - polish and sanity check
 #
 # Remarks: Numerous data processing stages need to be repeated within different part of
 # the system. Thus, instead of coding those functions each time under the relevant part of the code
@@ -223,3 +224,117 @@ def deletefilerecord(dbconlist, delsql):
 		return None
 		
 
+##### DB output processing #####
+
+
+def newresultsdict(resultlist):
+	filemetadict = dict()
+	if len(resultlist) > 0:
+		for result in resultlist:
+			filedate = result[4].strftime("%Y-m%-%d %H:%M:%S")  # https://docs.python.org/3.10/library/datetime.html#datetime.datetime.strftime
+			if len(result[2]) > 15:
+				keytagdisplay = result [2] [:12] + " ..."
+			else:
+				keytagdisplay = result[2]
+			# Converting it to human-friendly file size
+			if result[5] > 1000000:  # https://realpython.com/python-numbers/#integers
+				fsize = "{} megabytes".format(str(round(float(result[5]/999999.9), 2)))
+			elif result[5] > 1000 and result[5] < 1000000:
+				fsize = "{} kilobytes".format(str(round(float(result[5]/999.9), 2)))
+			else:
+				fsize = "{} bytes".format(result[1].strip(), keytagdisplay, filedate, result[3], fsize)
+				filemetadict[result[0]] = keydata
+	else:
+		print("<empty> HTML bla bla")
+	return filemetadict
+	
+# The following function below sets a mime type for file extension.
+def getmimetype(filetype):
+	if filetype.lower() == "zip":
+		truemime = 'application/zip'
+	elif filetype.lower() == "docx":
+		truemime = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+	elif filetype.lower() == "xls":
+		truemime = 'application/vnd.ms-excel'
+	elif filetype.lower() == "jpeg":
+		truemime = 'image/jpeg'
+	elif filetype.lower() == "jpg":
+		truemime = 'image/jpeg'
+	elif filetype.lower() == "svg":
+		truemime = 'image/svg+xml'
+	elif filetype.lower() == "pdf":
+		truemime = 'application/pdf'
+	elif filetype.lower() == "txt":
+		truemime = 'text/csv'
+	elif filetype.lower() == "csv":
+		truemime = 'text/csv'
+	else:
+		truemime = 'invalid-mimetype'
+	return truemime  # return string value
+	
+# The following function handle conversion between dictionaries and tuples
+def newsharedgroups(shrgrpdict):
+	presgrouplist = []
+	shrgrpitems = shrgrpdict.items()
+	for item in shrgrpitems:
+		gid = item[0]
+		gname = item[1][0]
+		if len(item[1][1]) > 30:
+			gdesc = item[1][1][:27] + "..."
+		else:
+			gdesc = item[1][1]
+		gdetails = "{}: {}".format(gname, gdesc)  # https://kapeli.com/cheat_sheets/Python_Format_Strings.docset/Contents/Resources/Documents/index.html#//dash_ref_Member%20and%20Element%20Access/Entry/Access%20element%20by%20index/0
+		presgrouplist.append((gid, gdetails))
+	return presgrouplist
+	
+
+
+##### static HTML input field check #####
+
+# removing whitespaces around the provided input,
+# also detecting if non-allowed chars used in the input field and
+# replacing that with 'invalid_input'
+def testuserstrps(ustr):
+	strpustr = ustr.strip()  # https://docs.python.org/3.10/library/stdtypes.html#str.strip
+	allowlist = string.ascii_letters + string.digits
+	for char in strpustr:
+		if char not in allowlist:
+			# terminate the request and send the provided input for investigation
+			defang = "- -" + ustr + "- -"
+			return [False, "invalid_input", defang]
+	return [True, strpustr]
+	
+
+
+# The following function confirms the radio buttons
+# on the static HTML views are used to select files
+def testfsradio(rb1, rb2):
+	if (not isinstance(rb1, str)) and (not isinstance(rb2, str)):  # https://docs.python.org/3.10/library/functions.html#isinstance
+		msg = "Please repeat the search and do not forget to select one of the available radio buttons"
+		return msg
+	elif (isinstance(rb1, str)) and (not isinstance(rb2, str)):
+		msg = "None of the available radio buttons selected!"
+		return msg
+	elif (not isinstance(rb1, str)) and (isinstance (rb2, str)):
+		msg = "No file selected!"
+		return msg
+	elif (rb1 == '00000000000000000000000000000000'):
+		msg = "Nothing found!"
+		return msg
+	else:
+		return None
+		
+def testfschkbx(cblist):
+	if len(cblist) == 0:
+		msg = "This file won't be share with any groups from now on"
+		return msg
+	return None
+	
+
+# The following function checks if the file has unusual naming patterns
+def getfileextension(flupfilename):
+	flupext = flupfilename.split('.')[-1]
+	return flupext
+	
+
+#
