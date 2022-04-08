@@ -30,10 +30,10 @@ def getauthsfg(glstr):
 	return aslist
 	
 
-##### SQL queries #####
+##### SQL Pre-defined Statements #####
 
 
-# The following function below will be used to create custom SQL queries
+# The following function will be used to create custom SQL queries
 # where supporting CRUD operations, including fetching the files end users own
 # or shared across different groups. It does also meet one of the assignment requirement
 # - search capability
@@ -74,7 +74,7 @@ def getauthsfilesql(uid, authgroups, ftype, fname=None, fkeytag=None):
 	return fullsql
 	
 
-# The following function below fetches binary blobs and mime types.
+# The following function fetches binary blobs and mime types.
 # It does also  validate if authenticated users are authorised to
 # access particular file.
 # where clauses and multiple conditions : https://www.brainbell.com/tutorials/MySQL/Combining_WHERE_Clauses.htm
@@ -108,7 +108,7 @@ def testfileownersql(fileuuid):
 		return sqlselect
 		
 
-# The following function below allow modification of file permissions
+# The following function allow modification of file permissions
 # only by authorised individual or a validated file owner
 
 
@@ -116,6 +116,110 @@ def updatesharedgroupssql(grouplist, fileuuid, fileowner):
 	asglist = ','.join([str(x) for x in grouplist])
 	updgrpsql = "update storedfiles set authgroups='{}' where uuid_hex='{}' and fileowner={}".format(asglist, fileuuid, int(fileowner))
 	return updgrpsql
+	
+def getfiledeletesql(uid, fileuuid):
+	deletesql = "delete from storedfiles where uuid_hex='{}' and fileowner='{}'".format(fileuuid, uid)
+	return deletesql
+	
 
+##### SQL Queries #####
 
-#
+# setting up connection to SQLAlchemy
+# that is needed for queries that use customised SQL statements
+# https://docs.sqlalchemy.org/en/14/orm/query.html
+
+# The following function leverages connection functions of 'init.py'
+def getauthsfiles(dbconlist, appsql):
+	try:
+		dbhandle = dbconnectalt(dbconlist)
+		thiscur = dbhandle.cursor()  # https://www.tutorialspoint.com/python_data_access/python_mysql_cursor_object.htm
+		thiscur.execute(appsql)
+		tuplelist = thiscur.fetchmany(size=15)  # fetch first 15 records
+		dbhandle.close()
+	except Exception as err:
+		return None
+	if isinstance(tuplelist, list):
+		return tuplelist
+	else:
+		return None
+		
+def getfiledata(dbconlist, filesql):
+	try:
+		dbhandle = dbconnectalt(dbconlist):
+		thiscur = dbhandle.cursor()
+		thiscur =.execute(filesql)  # fetch file type and binary
+		resulttuple = thiscur.fetchone()
+		dbhandle.close()
+	except Exception as err:
+		return None
+	if isinstance(resulttuple, tuple):
+		return resulttuple  # confirm if it exists
+	else:
+		return None
+		
+def testfileownership (dbconlist, ownersql):
+	try:
+		dbhandle = dbconnectalt(dbconlist)
+		thiscur = dbhandle.cursor()
+		thiscur.execute(ownersql)
+		resulttuple = thiscur.fetchone()  # fetch file type and binary
+		dbhandle.close()
+	except Exception as err:
+		return None
+	return resulttuple  # https://www.python.org/dev/peps/pep-0008/#programming-recommendations
+	
+def updatesharedgrp(dbconlist, shgrpsql):
+	try:
+		dbhandle = dbconnectalt(dbconlist)
+		thiscur = dbhandle.cursor()
+		resultcode = thiscur.execute(shgrpsql)
+		dbhandle.commit()  # https://docs.python.org/3.10/library/sqlite3.html#sqlite3.Connection.commit
+		dbhandle.close()  # https://docs.python.org/3.10/library/sqlite3.html#sqlite3.Connection.commit
+	except Exception as err:
+		print(err)
+		return None
+	return resultcode  # https://www.python.org/dev/peps/pep-0008/#programming-recommendations
+	
+
+# The following function fetch details of each group end user has authorisation
+# fetching all details and moving into temporary container
+def getgroupdetails(asglist):
+	asgroupdetails = dict()
+	for asg in asglist:
+		tmplist = []
+		grouprecord = DataGroup.query.filter_by(groupid=asg).first()  # http://docs.sqlalchemy.org/en/14/orm/query.html#sqlalchemy.orm.Query.first
+		if grouprecord is not None:
+			tmplist.append(grouprecord.groupname)
+			tmplist.append(grouprecord.groupdesc)
+			tmplist.append(grouprecord.grouptype)
+	return asgroupdetails
+	
+
+# The following function is a database insert function to upload files
+def newfileupload(dbcontlist, upsql, upval):
+	try:
+		dbhandle = dbconnectalt(dbcontlist)
+		thiscur = dbhandle.cursor()
+		result = thiscur.execute(upsql, upval)
+		dbhandle.commit()
+		dbhandle.close()
+		return result
+	except Exception as err:
+		print(err)
+		return None
+		
+
+# The following function is a database delete function to delete files
+def deletefilerecord(dbconlist, delsql):
+	try:
+		dbhandle = dbconnectalt(dbconlist)
+		thiscur = dbhandle.cursor()
+		result = thiscur.execute(delsql)
+		dbhandle.commit()
+		dbhandle.close()
+		return result
+	except Exception as err:
+		print(err)
+		return None
+		
+
