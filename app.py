@@ -251,7 +251,7 @@ def getdownload():
 	# since we mostly avoid client side javascripts, this can be done on the server side
 	print ("inside search-download-2")
 	fileuuid = request.form.get('fileselection')
-	selection = request.form.get('actionrequest')
+	selaction = request.form.get('actionrequest')
 	# Input validation goes here
 	errmsg = testfsradio(fileuuid, selaction)
 	if errmsg is not None:
@@ -271,7 +271,7 @@ def getdownload():
 		if selaction == "sharefile" or selaction == "deletefile":
 			tfosql = testfileownersql(fileuuid)
 			dbcondata = getconnectiondata()
-			tforesult = testfineownership(dbcondata, tfosql)
+			tforesult = testfileownership(dbcondata, tfosql)
 			if int(tforesult[0]) != int(uid):
 				errmsg = "Account {} not the current owner of file {}".format(aid, tforesult[1])
 				flash(errmsg)
