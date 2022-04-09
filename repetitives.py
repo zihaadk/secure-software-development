@@ -147,9 +147,9 @@ def getauthsfiles(dbconlist, appsql):
 		
 def getfiledata(dbconlist, filesql):
 	try:
-		dbhandle = dbconnectalt(dbconlist):
+		dbhandle = dbconnectalt(dbconlist)
 		thiscur = dbhandle.cursor()
-		thiscur =.execute(filesql)  # fetch file type and binary
+		thiscur.execute(filesql)  # fetch file type and binary
 		resulttuple = thiscur.fetchone()
 		dbhandle.close()
 	except Exception as err:
@@ -243,8 +243,9 @@ def newresultsdict(resultlist):
 			elif result[5] > 1000 and result[5] < 1000000:
 				fsize = "{} kilobytes".format(str(round(float(result[5]/999.9), 2)))
 			else:
-				fsize = "{} bytes".format(result[1].strip(), keytagdisplay, filedate, result[3], fsize)
-				filemetadict[result[0]] = keydata
+				fsize = "{} bytes".format(str(result[5]))
+			keydata = "{} {} {} {} {}".format(result[1].strip(), keytagdisplay, filedate, result[3], fsize)
+			filemetadict[result[0]] = keydata
 	else:
 		print("<empty> HTML bla bla")
 	return filemetadict
