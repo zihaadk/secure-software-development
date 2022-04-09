@@ -80,7 +80,7 @@ def getauthsfilesql(uid, authgroups, ftype, fname=None, fkeytag=None):
 # It does also  validate if authenticated users are authorised to
 # access particular file.
 # where clauses and multiple conditions : https://www.brainbell.com/tutorials/MySQL/Combining_WHERE_Clauses.htm
-def gelfiledatasql(uid, authgroups, fileuuid):
+def getfiledatasql(uid, authgroups, fileuuid):
 	sqlselect = "select filetype,filename,filedata, from storedfiles"
 	sqlwhere = "where uuid_hex='{}' and ( fileowner={} or".format(fileuuid, uid)
 	authgroups = getauthsfg(authgroups)
