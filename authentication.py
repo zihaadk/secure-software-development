@@ -8,7 +8,7 @@
 # Flask/login_reqired used to protect all views from unauthorised access
 
 
-from ast import str
+from ast import Str
 from crypt import methods
 import flask, logging
 from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app
@@ -70,7 +70,7 @@ def login_post():
 				return redirect(url_for('app.index'))
 			# Checking password
 			pwdchk = False
-			if isinstance(thisduserobj,userid, int):
+			if isinstance(thisduserobj.userid, int):
 				thisauthzobj = getauthns(thisduserobj.userid)
 			if thisauthzobj is not None:
 				pwdchk = verify_passwd(thisauthzobj.userpasswd, formpasswd)
@@ -96,19 +96,20 @@ def login_post():
 				print(logmsg)
 				current_app.logger.warning(logmsg)
 				return redirect(url_for('app.index'))
-			else:
-				# Suspicious username
-				flash("Please double check your access ID and Password, then retry to login. The ISS ground centre is available for support")
-				payloadlist = ['URL', '/login', 'HTTPMethod', request.method, 'FailureReason', 'InvalidInputCharacters', 'AccessID', unametest[2]]
-				logmsgdict = newlogheader(2, 2, 2)
-				logmsg = newlogmsg(logmsgdict, payloadlist)
-				print(logmsg)
-				current_app.logger.warning(logmsg)
-				return redirect(url_for('app.index'))
-			else:
-				# Checking if both input fields filled-in
-				flash("Please double check your access ID and Password, then retry to login. The ISS ground centre is available for support")
-				return redirect(url_for('app.index'))
+		else:
+			# Suspicious username
+			flash("Please double check your access ID and Password, then retry to login. The ISS ground centre is available for support")
+			payloadlist = ['URL', '/login', 'HTTPMethod', request.method, 'FailureReason', 'InvalidInputCharacters', 'AccessID', unametest[2]]
+			logmsgdict = newlogheader(2, 2, 2)
+			logmsg = newlogmsg(logmsgdict, payloadlist)
+			print(logmsg)
+			current_app.logger.warning(logmsg)
+			return redirect(url_for('app.index'))
+			
+	else:
+		# Checking if both input fields filled-in
+		flash("Please double check your access ID and Password, then retry to login. The ISS ground centre is available for support")
+		return redirect(url_for('app.index'))
 				
 
 # The function below checks the authentication status of end users and route them to the landing page
