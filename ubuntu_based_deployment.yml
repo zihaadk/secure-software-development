@@ -1,7 +1,7 @@
 # https://ubuntu.com/server/docs/install/autoinstall-reference
 
 - name: Get host info
-  hosts: issdes
+  hosts: localhost
   gather_facts: True
   tasks:
     # Install required software packages
