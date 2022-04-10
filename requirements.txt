@@ -1,0 +1,11 @@
+Flask==2.0.3
+Flask_Login==0.6.0
+Flask_SQLAlchemy==2.5.1
+MarkupSafe==2.1.1
+mysql_connector_repackaged==0.3.1
+pysyslogclient==0.1.1
+python-dotenv==0.20.0
+setuptools==58.1.0
+SQLAlchemy==1.4.35
+syslog_py==0.2.5
+Werkzeug==2.0.3
