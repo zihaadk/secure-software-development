@@ -1,7 +1,8 @@
 #!bin/env python3
 # Author(s): cryptopal85
 # Version history: April 09 2022 - Initialising main structure
-#                                = Setting default group ID creation
+#                                - Setting default group ID creation
+#                  April 10 2022 - fixed syntax errors
 #
 # Remarks: Assuming this CLI-based tool will be used for administrating users
 # alongside with 'usermanagementutil.py'.
@@ -70,49 +71,49 @@ def getuserid(accessid):
 
 def app():
 	quit = False
-	while (not quit)
+	while (not quit):
 	# user data collection and account creation
-	print("Creating new ID for ISS DES")
-	print("****************************\n")
-	print("Starting user data collection")
-	userforename = input("User's first name (first, formal one)?:")
-	usersurname = input("User's surname (last)?:")
-	userdisplayname = input("User's full name, first or first and last")
-	print("User's ID will be created based on the following naming convention:\n 2 char code for spance agency \n 3 digits, first initial, 2 digits, last initial")
-	useraccessid = input("Access ID for user, XXdddXddx")
-	print("Space Agency group membership, Europe,US,Canada,Japan,Russia")
-	useragency = input("Space Agency Group:")
-	print(usermanagementutil.checkuseragency(useragency))
-	if usermanagementutil.checkuseragency(useragency) != 99:
-		authgroups = usermanagementutil.checkuseragency(useragency)
-	else:
-		print("Not valid user agency, must be one of: Europe,US,Canada,Japan,Russia")
-		continue
-	# move into the db and get user identifier
-	nduresult = createdatauser(userforename, usersurname, userdisplayname, useraccessid, useragency, authsgroups)
-	if nduresult is not None:
-		print(dir(nduresult))
-	thisuid = getuserid(useraccessid)
-	if thisuid is None:
-		print("cannot fetch userid for account {}:".format(useraccessid))
-		answer = input("terminate and restart? (y/n):")
-		if answer[:1].lower() == 'y':
+		print("Creating new ID for ISS DES")
+		print("****************************\n")
+		print("Starting user data collection")
+		userforename = input("User's first name (first, formal one)?:")
+		usersurname = input("User's surname (last)?:")
+		userdisplayname = input("User's full name, first or first and last")
+		print("User's ID will be created based on the following naming convention:\n 2 char code for spance agency \n 3 digits, first initial, 2 digits, last initial")
+		useraccessid = input("Access ID for user, XXdddXddx")
+		print("Space Agency group membership, Europe,US,Canada,Japan,Russia")
+		useragency = input("Space Agency Group:")
+		print(usermanagementutil.checkuseragency(useragency))
+		if usermanagementutil.checkuseragency(useragency) != 99:
+			authgroups = usermanagementutil.checkuseragency(useragency)
+		else:
+			print("Not valid user agency, must be one of: Europe,US,Canada,Japan,Russia")
+			continue
+		# move into the db and get user identifier
+		nduresult = createdatauser(userforename, usersurname, userdisplayname, useraccessid, useragency, authgroups)
+		if nduresult is not None:
+			print(dir(nduresult))
+		thisuid = getuserid(useraccessid)
+		if thisuid is None:
+			print("cannot fetch userid for account {}:".format(useraccessid))
+			answer = input("terminate and restart? (y/n):")
+			if answer[:1].lower() == 'y':
+				quit = True
+				
+		# generating password, using werkzeug.security hashing for salted passwords
+		print("Generating new user password for ISS DES")
+		pwdcheck = False
+		while (not pwdcheck):
+			pwd = getpass.getpass(prompt = "Enter minimum 10 char password:")
+			shpwd = usermanagementutil.checkgenpasswd(pwd)
+			if shpwd:
+				newuserauthns(pwd, shpwd, thisuid)
+				pwdcheck = True
+				
+		# End of account creation
+		answer = input("all data collected, creating user? (y/n):")
+		if answer[:1].lower() == 'n':
 			quit = True
-			
-	# generating password, using werkzeug.security hashing for salted passwords
-	print("Generating new user password for ISS DES")
-	pwdcheck = False
-	while (not pwdcheck):
-		pwd = getpass.getpass(prompt = "Enter minimum 10 char password:")
-		shpwd = usermanagementutil.checkgenpasswd(pwd)
-		if shpwd:
-			newuserauthns(pwd, shpwd, thisuid)
-			pwdcheck = True
-			
-	# End of account creation
-	answer = input("all data collected, creating user? (y/n):")
-	if answer[:1].lower() == 'n':
-		quit = True
 		
 
 if __name__ == '__app__':
