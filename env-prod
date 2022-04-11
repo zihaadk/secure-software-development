@@ -1,7 +1,0 @@
-SECRET_KEY='xx'
-dbinstance="issdes"
-dbuser="devuser"
-dbcred="xxx"
-dbhost="yyy"
-APP_DIR='app'
-SERVER_URL='0.0.0.0:8000'
