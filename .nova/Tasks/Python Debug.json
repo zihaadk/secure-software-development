@@ -1,0 +1,12 @@
+{
+  "extension" : {
+    "identifier" : "panic.Python",
+    "name" : "Python"
+  },
+  "extensionTemplate" : "pythonDebug",
+  "extensionValues" : {
+    "python.debug.jinja" : true,
+    "python.debug.script" : "dbmodel.py"
+  },
+  "openLogOnRun" : "start"
+}
