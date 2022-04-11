@@ -24,7 +24,7 @@
         
     # application admin ID
     - name: adding admin ID
-      become: ye
+      become: yes
       user:
         name: issadm
         comment: administrator account for ISS DES server
@@ -37,16 +37,6 @@
       package_facts:
         manager: apt
       when: ansible_os_family == 'Debian'
-      
-    # NTP config
-    - name: Change NTP server
-      become: yes
-      copy:
-        src: resource_files/{{item}}
-        dest: /etc/ntp.conf
-        backup: yes
-      with_items:
-        - default-ntp.conf
         
     # restart NTP service
     - name: read new config
@@ -121,16 +111,6 @@
         name: gunicorn
         state: latest
         
-    # test app for flask
-    - name: install flask test app
-      become: yes
-      copy:
-        src: resource_files/flask_configs/{{item}}
-        dest: /home/issadm/wsgi.py
-        backup: yes
-      with_items:
-        - wsgi.py
-        
     # change mode
     - name: change executable mode
       become: yes
@@ -139,16 +119,6 @@
         owner: issadm
         group: issadm
         mode: 0755
-        
-    # system service for gunicorn
-    - name: gunicorn systemd file
-      become: yes
-      copy:
-        src: resource_files/flask_configs/{{item}}
-        dest: /lib/systemd/system/{{item}}
-        backup: yes
-      with_items:
-        - gunicorn.service
         
     # install lets encrypt
     - name: installing lets encrypt
