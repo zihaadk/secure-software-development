@@ -8,6 +8,7 @@
 
 from flask_login import UserMixin
 from . import db
+from sqlalchemy.orm import deferred
 
 
 class User(UserMixin, db.Model):
