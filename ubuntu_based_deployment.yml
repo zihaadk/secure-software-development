@@ -111,15 +111,6 @@
         name: gunicorn
         state: latest
         
-    # change mode
-    - name: change executable mode
-      become: yes
-      file:
-        path: /home/issadm/wsgi.py
-        owner: issadm
-        group: issadm
-        mode: 0755
-        
     # install lets encrypt
     - name: installing lets encrypt
       become: yes
