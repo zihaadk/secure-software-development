@@ -83,11 +83,25 @@ Once successful, the application will be accessible from the web browser on: `ht
 
 ## Discussion - Design & Coding Differences ##
 
+(Add discussion item here)
 
 ## Functional Testing Images ##
 
+Nova was used as a code editor with built in extenstions for Python, Pylint and Flake8 - this allowed automatic testing and correction:
 
+![This is an image](https://github.com/zihaadk/secure-software-development/blob/main/images/nova.png)
 
+User Login Screen:
+
+![This is an image](https://github.com/zihaadk/secure-software-development/blob/main/images/userlogin.png)
+
+File Upload Success Screen:
+
+![This is an image](https://github.com/zihaadk/secure-software-development/blob/main/images/Fileupload.png)
+
+File stored in DB:
+
+![This is an image](https://github.com/zihaadk/secure-software-development/blob/main/images/filestored.png)
 
 ## References ##
 
@@ -102,16 +116,3 @@ Python Software Foundation (2022) Unix syslog library routines. Available from: 
 Stackoverflow (2019) Django: Does "primary_key=True" also mean "unique"? Available from: https://stackoverflow.com/questions/58139212/django-does-primary-key-true-also-mean-unique [Accessed 07 April 2022].
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-![This is an image](https://github.com/zihaadk/secure-software-development/blob/main/images/nova.png)
