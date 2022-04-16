@@ -7,8 +7,9 @@ An Application is required for securely exchanging data between the ISS (Interna
 
 ### User Registration
 
-Files named ***usermanagementutil.py*** and ***makeissdesuser.py*** are used to register users to the system. It is assumed that the CLI will be used to perform user registration. The code is executed as follows: `python3 makeissdesuser.py`
+Files named ***usermanagementutil.py*** and ***makeissdesuser.py*** are used to register users to the system. It is assumed that the CLI will be used to perform user registration. The code is executed as follows: `python3 makeissdesuser.py` and produces the following output:
 
+![This is an image](https://github.com/zihaadk/secure-software-development/blob/main/images/userreg.png)
 
 
 
