@@ -25,7 +25,9 @@ The following python libraries are required:
 
 ### Code Structure 
 
+The code structure is as follows:
 
+![This is an image](https://github.com/zihaadk/secure-software-development/blob/main/images/codestructure.png)
 
 ## User Registration ##
 
@@ -55,6 +57,13 @@ Once successful, the application will be accessible from the web browser on: `ht
 
 ![This is an image](https://github.com/zihaadk/secure-software-development/blob/main/images/issdesui.png)
 
+## How does it Work? ##
+
+
+## Discussion - Design & Coding Differences ##
+
+
+## Functional Testing Images ##
 
 
 
@@ -65,9 +74,6 @@ Once successful, the application will be accessible from the web browser on: `ht
 
 
 
-
-
-1. Differences between Design Document & Final Code
 
 
 
