@@ -49,7 +49,7 @@ In addition, Flask libraries and modules are used to handle user session managem
 
 `dbmodel.py` - Used to create DB structure based on Python classes. (Stackoverflow, 2019).
 
-`repetitives.py` - Numerous data processing stages need to be repeated within different parts of the application. Therfore, instead of coding repeating functions this module can be reused. It does allow easy reuse of these custom functions in `app.py` and `authentication.py`.
+`repetitives.py` - Numerous data processing stages need to be repeated within different parts of the application. Therefore, instead of coding repeating functions this module can be reused. It does allow easy reuse of these custom functions in `app.py` and `authentication.py`.
 
 `appsecmon.py` - Used to generate logging information (Python Software Foundation, 2022).
 
@@ -59,7 +59,7 @@ Files named ***usermanagementutil.py*** and ***makeissdesuser.py*** are used to 
 
 ![This is an image](https://github.com/zihaadk/secure-software-development/blob/main/images/userreg.png)
 
-Users are created and placed into Authgroups allowing only users within an Authgroup to share files with each other. In the case where a user's profile has been hacked, the attacker would not gain access to files uploaded from other users, minimising the attack surface. The following Authorisation Groups are used:
+Users are created and placed into AuthGroups allowing only users within an AuthGroup to share files with each other. In the case where a user's profile has been hacked, the attacker would not gain access to files uploaded from other users, minimising the attack surface. The following Authorisation Groups are used:
 
 Auth Group    | Country
 ------------- | -------------
@@ -69,7 +69,7 @@ Auth Group    | Country
 15            | Japan
 12            | Russia
 
-Once completed the user will be required to save thier AccessID and Password. These credentials will be used to login to the application.
+Once completed the user will be required to save their AccessID and Password. These credentials will be used to login to the application.
 
 ## Main Application ##
 
@@ -84,10 +84,11 @@ Once successful, the application will be accessible from the web browser on: `ht
 ## Discussion - Design & Coding Differences ##
 
 (Add discussion item here)
+(Add differences in libraries here)
 
 ## Functional Testing Images ##
 
-Nova was used as a code editor with built in extenstions for Python, Pylint and Flake8 - this allowed automatic testing and correction:
+Nova was used as a code editor with built in extensions for Python, Pylint and Flake8 - this allowed automatic testing and correction:
 
 ![This is an image](https://github.com/zihaadk/secure-software-development/blob/main/images/nova.png)
 
