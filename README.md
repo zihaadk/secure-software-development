@@ -1,5 +1,4 @@
-# Secure Software Development
-MSc Cybersecurity - Secure Software Development Module - March 2022
+# University of Essex - MSc CyberSecurity - Secure Software Development Module - March 2022
 
 ## Introduction ##
 
@@ -23,11 +22,17 @@ The following python libraries are required:
 * Python-dotenv 0.20.0
 * gunicorn 20.1.0
 
-### Code Structure 
+## Code Structure ##
 
 The code structure is as follows:
 
 ![This is an image](https://github.com/zihaadk/secure-software-development/blob/main/images/codestructure.png)
+
+`app.py` - This is the main application used to route searching, sharing, uploading and downloading requests to the appropriate URL's. Front end forms are displayed using html templates obtained from Bulma (2022).
+
+`authentication.py` - This code is required for authenticating end users as well as perform input validations. When a user's password is entered during the registration process it is encrypted using the werkzeug.security module and stored in a MySQL database with the corresponding user id. Screenshot below:
+
+![This is an image](https://github.com/zihaadk/secure-software-development/blob/main/images/dbs1.png)
 
 ## User Registration ##
 
@@ -57,13 +62,17 @@ Once successful, the application will be accessible from the web browser on: `ht
 
 ![This is an image](https://github.com/zihaadk/secure-software-development/blob/main/images/issdesui.png)
 
-## How does it Work? ##
-
-
 ## Discussion - Design & Coding Differences ##
 
 
 ## Functional Testing Images ##
+
+
+
+
+## References ##
+
+Bulma (2022) Bulma: the modern CSS framework that just works. Available from: https://bulma.io/ [Accessed 29 March 2022].
 
 
 
