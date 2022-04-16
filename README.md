@@ -1,9 +1,11 @@
 # Secure Software Development
-MSc Cybersecurity - Secure Software Development March 2022
+MSc Cybersecurity - Secure Software Development Module - March 2022
 
-Introduction
+##Introduction##
 
-A web-based system will be designed for securely exchanging data between the ISS and the ground centre, ![image](https://user-images.githubusercontent.com/42993022/163674604-e174ab92-11f7-480a-b8ef-87736f7e8563.png)
+An Application is required for securely exchanging data between the ISS (International Space Station) and the ground centre staff. The application provides the following functionalities:
+
+  1. User Registration - 
 
 
 
@@ -11,6 +13,6 @@ A web-based system will be designed for securely exchanging data between the ISS
 2. How to Execute Code
 3. 
 
-
+Users are created and places into Authgroups allowing only users within an Authgroup to share files with each other. In the case where a user's profile has been hacked, the attacker would not gain access to files uploaded from other users, minizing the attack surface.
 
 ![This is an image](https://github.com/zihaadk/secure-software-development/blob/main/images/nova.png)
