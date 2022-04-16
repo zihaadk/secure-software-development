@@ -14,7 +14,7 @@ An application was developed for securely exchanging data between the ISS (Inter
 The following pre-requisites are required to successfully run the code:
 
 * Python 3.10.3
-* MySQL Database - a script called ***issdes.sql*** is provided to create the database schema using Querious (https://www.araelium.com/support/querious/download-previous-versions)
+* MySQL Database - a script called ***issdes.sql*** is provided to create the database schema using Querious (Araelium Group, 2021). 
  
 The following python libraries are required:
 
@@ -35,19 +35,19 @@ The code structure is as follows:
 
 `app.py` - This is the main application used to route searching, sharing, uploading and downloading requests to the appropriate URL's. Front end forms are displayed using html templates obtained from Bulma (2022).
 
-`authentication.py` - This code is required for authenticating end users as well as perform input validations. When a user's password is entered during the registration process it is encrypted using the werkzeug.security module and stored in a MySQL database with the corresponding user id. Screenshot below:
+`authentication.py` - This code is required for authenticating end users as well as performing input validations. When a user's password is entered during the registration process it is encrypted using the werkzeug.security module and stored in a MySQL database with the corresponding user id. Screenshot below:
 
 ![This is an image](https://github.com/zihaadk/secure-software-development/blob/main/images/dbs1.png)
 
 In addition, Flask libraries and modules are used to handle user session management. (Flask, N.D.).
 
-`__init__.py` - Used to initialise the main structure of the application making use of Flask libraries. (Pallets, 2010).
+`__init__.py` - Used to initialise the main structure of the application making use of Flask libraries (Pallets, 2010).
 
 `config.py` - Used to store secret key for MySQL DB.
 
 `db.py` - Used to connect to the MySQL DB.
 
-`dbmodel.py` - Used to create DB structure based on Python classes. (Stackoverflow, 2019).
+`dbmodel.py` - Used to create DB structure based on Python classes (Stackoverflow, 2019).
 
 `repetitives.py` - Numerous data processing stages need to be repeated within different parts of the application. Therefore, instead of coding repeating functions this module can be reused. It does allow easy reuse of these custom functions in `app.py` and `authentication.py`.
 
@@ -105,6 +105,8 @@ File stored in DB:
 ![This is an image](https://github.com/zihaadk/secure-software-development/blob/main/images/filestored.png)
 
 ## References ##
+
+Araelium Group (2021) Araelium. Available from: https://www.araelium.com/support/querious/download-previous-versions [Accessed 30 March 2022].
 
 Bulma (2022) Bulma: the modern CSS framework that just works. Available from: https://bulma.io/ [Accessed 29 March 2022].
 
