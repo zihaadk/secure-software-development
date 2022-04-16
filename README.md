@@ -3,9 +3,12 @@ MSc Cybersecurity - Secure Software Development Module - March 2022
 
 ## Introduction ##
 
-An Application is required for securely exchanging data between the ISS (International Space Station) and the ground centre staff. The application provides the following functionalities:
+An Application is required for securely exchanging data between the ISS (International Space Station) and the ground centre staff. The application is written in Python 3.10.3 and provides the following functionalities:
 
-  ### 1. User Registration - 
+### User Registration
+
+Files named *usermanagementutil.py* and *makeissdesuser.py* are used to register users to the system. It is assumed that the CLI will be used to perform user registration. The code is executed as follows: `python3 makeissdesuser.py`
+
 
 
 
