@@ -43,6 +43,16 @@ In addition, Flask libraries and modules are used to handle user session managem
 
 `__init__.py` - Used to initialise the main structure of the application making use of Flask libraries. (Pallets, 2010).
 
+`config.py` - Used to store secret key for MySQL DB.
+
+`db.py` - Used to connect to the MySQL DB.
+
+`dbmodel.py` - Used to create DB structure based on Python classes. (Stackoverflow, 2019).
+
+`repetitives.py` - Numerous data processing stages need to be repeated within different parts of the application. Therfore, instead of coding repeating functions this module can be reused. It does allow easy reuse of these custom functions in `app.py` and `authentication.py`.
+
+`appsecmon.py` - Used to generate logging information (Python Software Foundation, 2022).
+
 ## User Registration ##
 
 Files named ***usermanagementutil.py*** and ***makeissdesuser.py*** are used to register users to the system. It is assumed that the CLI will be used to perform user registration. The code is executed as follows: `python3 makeissdesuser.py` and produces the following output:
@@ -85,7 +95,13 @@ Bulma (2022) Bulma: the modern CSS framework that just works. Available from: ht
 
 Flask (N.D.) Flask-Login. Available from: https://flask-login.readthedocs.io/en/latest/ [Accessed 30 March 2022].
 
-Pallets (2010) The Application Context. Available from: https://flask.palletsprojects.com/en/2.1.x/appcontext/ [Accessed 2 April 2022].
+Pallets (2010) The Application Context. Available from: https://flask.palletsprojects.com/en/2.1.x/appcontext/ [Accessed 02 April 2022].
+
+Python Software Foundation (2022) Unix syslog library routines. Available from: https://docs.python.org/3/library/syslog.html [Accessed 09 April 2022].
+
+Stackoverflow (2019) Django: Does "primary_key=True" also mean "unique"? Available from: https://stackoverflow.com/questions/58139212/django-does-primary-key-true-also-mean-unique [Accessed 07 April 2022].
+
+
 
 
 
