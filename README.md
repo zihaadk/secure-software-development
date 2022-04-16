@@ -39,6 +39,10 @@ The code structure is as follows:
 
 ![This is an image](https://github.com/zihaadk/secure-software-development/blob/main/images/dbs1.png)
 
+In addition, Flask libraries and modules are used to handle user session management. (Flask, N.D.).
+
+`__init__.py` - Used to initialise the main structure of the application making use of Flask libraries. (Pallets, 2010).
+
 ## User Registration ##
 
 Files named ***usermanagementutil.py*** and ***makeissdesuser.py*** are used to register users to the system. It is assumed that the CLI will be used to perform user registration. The code is executed as follows: `python3 makeissdesuser.py` and produces the following output:
@@ -79,6 +83,9 @@ Once successful, the application will be accessible from the web browser on: `ht
 
 Bulma (2022) Bulma: the modern CSS framework that just works. Available from: https://bulma.io/ [Accessed 29 March 2022].
 
+Flask (N.D.) Flask-Login. Available from: https://flask-login.readthedocs.io/en/latest/ [Accessed 30 March 2022].
+
+Pallets (2010) The Application Context. Available from: https://flask.palletsprojects.com/en/2.1.x/appcontext/ [Accessed 2 April 2022].
 
 
 
