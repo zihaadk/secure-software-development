@@ -4,6 +4,11 @@
 
 An application was developed for securely exchanging data between the ISS (International Space Station) and the ground centre staff. The application is written in Python 3.10.3 and provides the following functionalities:
 
+* User Registration and Login
+* File Search & Download
+* File Upload
+* File Share
+
 ### Pre-Requisites
 
 The following pre-requisites are required to successfully run the code:
