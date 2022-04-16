@@ -58,7 +58,7 @@ thereafter the application is accessible from the web browser on: `http://127.0.
 2. How to Execute Code
 3. 
 
-Users are created and places into Authgroups allowing only users within an Authgroup to share files with each other. In the case where a user's profile has been hacked, the attacker would not gain access to files uploaded from other users, minizing the attack surface. the following Authorisation Groups are used:
+Users are created and places into Authgroups allowing only users within an Authgroup to share files with each other. In the case where a user's profile has been hacked, the attacker would not gain access to files uploaded from other users, minimising the attack surface. The following Authorisation Groups are used:
 
 Auth Group    | Country
 ------------- | -------------
