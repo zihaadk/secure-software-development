@@ -83,8 +83,19 @@ Once successful, the application will be accessible from the web browser on: `ht
 
 ## Discussion - Design & Coding Differences ##
 
-(Add discussion item here)
-(Add differences in libraries here)
+During the design phase the following requirements were established:
+
+* Perform CRUD (Create, Read, Update and Delete) operations
+* Perform moderate-level input validations
+* Exchange data between groups
+* Revoke user accounts (Inactivity = 90 days)
+* Database Replication
+
+The final code achieved the CRUD operation requirements, input validations and was also able to share files between groups. However the code did not meet the objectives of revocation of user accounts as well as database replication due to time constraints (21 days). These items should be included as future work.
+
+The difference in selected libraries during the design and coding phase are listed below:
+
+![This is an image](https://github.com/zihaadk/secure-software-development/blob/main/images/diff_library.png)
 
 ## Functional Testing Images ##
 
