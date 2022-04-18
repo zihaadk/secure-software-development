@@ -104,6 +104,12 @@ File stored in DB:
 
 ![This is an image](https://github.com/zihaadk/secure-software-development/blob/main/images/filestored.png)
 
+Search for a File:
+
+![This is an image](https://github.com/zihaadk/secure-software-development/blob/main/images/search1.png)
+
+![This is an image](https://github.com/zihaadk/secure-software-development/blob/main/images/search2.png)
+
 ## References ##
 
 Araelium Group (2021) Araelium. Available from: https://www.araelium.com/support/querious/download-previous-versions [Accessed 30 March 2022].
